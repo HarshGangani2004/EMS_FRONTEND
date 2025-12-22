@@ -1,0 +1,131 @@
+/* ---------- FORM CONTAINER ---------- */
+.form-container {
+  background: #fff;
+  width: 480px;
+  padding: 30px;
+  margin: 30px auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- HEADING ---------- */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+/* ---------- FORM GROUPS ---------- */
+.form-group {
+  margin-bottom: 18px;
+}
+
+/* Label */
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  font-size: 14px;
+}
+
+/* Required Asterisk */
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+/* ---------- INPUTS & DROPDOWNS ---------- */
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d2d6dc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+/* ---------- ERROR MESSAGES ---------- */
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Bottom error message */
+.error-last {
+  color: red;
+  margin: 15px 0;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* ---------- SKILLS SECTION ---------- */
+.skills-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #f8f9fc;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef2ff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.skill-item:hover {
+  background: #e0e7ff;
+}
+
+.skill-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- SUBMIT BUTTON ---------- */
+.save-btn {
+  width: 100%;
+  background: #1f2937;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 5px;
+}
+
+.save-btn:hover {
+  background: #111827;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+  .form-container {
+    width: 92%;
+    padding: 20px;
+  }
+}

@@ -1,0 +1,105 @@
+<div class="create-user-container">
+  <h2>Create User</h2>
+
+  <form #f="ngForm" (ngSubmit)="save(f)" autocomplete="off">
+
+    <!-- FULL NAME -->
+    <div class="form-group">
+  <label>Full Name <span class="required">*</span></label>
+
+  <input
+    type="text"
+    name="FullName"
+    [(ngModel)]="model.FullName"
+    required
+    minlength="3"
+    maxlength="30"
+    #fullCtrl="ngModel"
+    (blur)="model.FullName = model.FullName.trim(); fullCtrl.control.markAsTouched()"
+  />
+
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['required']">
+    Full Name is required
+  </p>
+
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['minlength']">
+    Minimum 3 characters required
+  </p>
+
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['maxlength']">
+    Maximum 30 characters allowed
+  </p>
+</div>
+
+
+    <!-- EMAIL -->
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        type="email"
+        name="Email"
+        [(ngModel)]="model.Email"
+        #emailCtrl="ngModel"
+        required
+        email
+      />
+
+      <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['required']">
+        Email is required
+      </p>
+
+      <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['email']">
+        Invalid email format
+      </p>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        type="password"
+        name="Password"
+        [(ngModel)]="model.Password"
+        #passCtrl="ngModel"
+        autocomplete="new-password"
+        required
+        minlength="6"
+      />
+
+      <p class="error" *ngIf="passCtrl.touched && passCtrl.errors?.['required']">
+        Password is required
+      </p>
+
+      <p class="error" *ngIf="passCtrl.touched && passCtrl.errors?.['minlength']">
+        Password must be at least 6 characters
+      </p>
+    </div>
+
+    <!-- ROLE -->
+    <div class="form-group">
+      <label>Role</label>
+
+      <select
+        name="RoleId"
+        [(ngModel)]="model.RoleId"
+        #roleCtrl="ngModel"
+        required
+      >
+        <option value="">-- Select Role --</option>
+        <option *ngFor="let r of roles" [value]="r.id">
+          {{ r.name }}
+        </option>
+      </select>
+
+      <p class="error" *ngIf="roleCtrl.touched && roleCtrl.errors?.['required']">
+        Please select a role
+      </p>
+    </div>
+
+    <!-- SAVE BUTTON -->
+    <button class="save-btn" [disabled]="f.invalid">
+      Create User
+    </button>
+
+  </form>
+</div>

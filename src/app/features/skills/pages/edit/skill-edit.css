@@ -1,0 +1,110 @@
+/* Perfect CSS for the Form Component */
+/* Universal box-sizing for consistent spacing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Form Container */
+.form-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto; /* Center the form on larger screens */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Title */
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.required{
+  color:red
+}
+/* Label Styling */
+label {
+  font-weight: 500;
+  font-size: 20px;
+  color: #555;
+  margin-bottom: -10px; /* Adjust spacing between label and input */
+}
+
+/* Input Field Styling */
+input[type="text"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus and hover states for input */
+input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+/* Disabled input state */
+input[type="text"]:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+/* Save Button */
+.save-btn {
+  background: #374151;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px; /* Space between input and button */
+}
+
+/* Save Button hover and active states */
+.save-btn:hover {
+  background: #374151;
+  transform: translateY(-2px);
+}
+
+.save-btn:active {
+  transform: translateY(0);
+}
+.error{
+  color:red
+}
+
+/* Media query for smaller devices */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 20px;
+    margin: 15px; /* Add some margin on all sides */
+  }
+
+  .form-container h2 {
+    font-size: 20px;
+  }
+
+  .save-btn {
+    width: 100%; /* Make button full width */
+  }
+}

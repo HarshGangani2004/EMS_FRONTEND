@@ -1,0 +1,134 @@
+<div class="department-container">
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <h2>My Leaves</h2>
+
+    <div class="header-actions">
+
+      <!-- SEARCH -->
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search leaves..."
+        [(ngModel)]="search"
+        (input)="onSearch()" />
+
+      <!-- APPLY LEAVE -->
+      <button
+        class="add-btn"
+        routerLink="/leave/create"
+        *hasPermission="'leave.create'">
+        + Apply Leave
+      </button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <p *ngIf="loading">Loading leaves...</p>
+
+  <!-- TABLE -->
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="department-table">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Leave Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let l of leaves; let i = index">
+          <!-- 🔥 FIXED INDEX (PAGINATION SAFE) -->
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+
+          <td>{{ l.leaveType }}</td>
+          <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
+
+          <!-- STATUS -->
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'pending': l.status === 'Pending',
+                'approved': l.status === 'Approved',
+                'rejected': l.status === 'Rejected'
+              }">
+              {{ l.status }}
+            </span>
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="action-buttons">
+
+            <!-- VIEW -->
+            <button
+              class="icon-btn view"
+              title="View Leave"
+              (click)="view(l.id)">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <!-- EDIT (PENDING ONLY) -->
+            <ng-container *ngIf="l.status === 'Pending'">
+              <ng-container *hasPermission="'leave.update'">
+                <button
+                  class="icon-btn edit"
+                  title="Edit Leave"
+                  (click)="edit(l.id)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </ng-container>
+            </ng-container>
+
+            <!-- DELETE (PENDING ONLY) -->
+            <ng-container *ngIf="l.status === 'Pending'">
+              <ng-container *hasPermission="'leave.delete'">
+                <button
+                  class="icon-btn delete"
+                  title="Delete Leave"
+                  (click)="delete(l.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </ng-container>
+            </ng-container>
+
+          </td>
+        </tr>
+
+        <!-- NO DATA -->
+        <tr *ngIf="leaves.length === 0">
+          <td colspan="6" class="no-data">No leaves found</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination" *ngIf="!loading && totalPages > 1">
+    <button
+      (click)="prevPage()"
+      [disabled]="page === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{ page }} of {{ totalPages }}
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page === totalPages">
+      Next
+    </button>
+  </div>
+
+</div>

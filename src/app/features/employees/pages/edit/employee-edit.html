@@ -1,0 +1,139 @@
+<div class="form-container">
+
+  <h2>Edit Employee</h2>
+
+  <form #form="ngForm" (ngSubmit)="update(form)">
+
+    <!-- FULL NAME -->
+    <div class="form-group">
+      <label>Full Name <span class="required">*</span></label>
+
+      <input 
+        type="text"
+        class="form-input"
+        name="fullName"
+        [(ngModel)]="model.fullName"
+        required
+        minlength="3"
+        maxlength="30"
+        #fullName="ngModel"
+        (blur)="model.fullName=model.fullName.trim(); fullName.control.markAsTouched()"
+      />
+
+      <span class="error" *ngIf="fullName.touched && fullName.errors">
+        <span *ngIf="fullName.errors['required']">Full Name is required</span>
+        <span *ngIf="fullName.errors['minlength']">Minimum 3 characters required</span>
+        <span *ngIf="fullName.errors['maxlength']">Maximum 30 characters allowed</span>
+      </span>
+    </div>
+
+
+    <!-- EMAIL -->
+    <div class="form-group">
+      <label>Email <span class="required">*</span></label>
+
+      <input 
+        type="email"
+        class="form-input"
+        name="email"
+        [(ngModel)]="model.email"
+        required
+        email
+        #email="ngModel"
+        (blur)="model.email=model.email.trim(); email.control.markAsTouched()"
+      />
+
+      <span class="error" *ngIf="email.touched && email.errors">
+        <span *ngIf="email.errors['required']">Email is required</span>
+        <span *ngIf="email.errors['email']">Invalid email address</span>
+      </span>
+    </div>
+
+
+    <!-- SALARY -->
+    <div class="form-group">
+      <label>Salary <span class="required">*</span></label>
+
+      <input 
+        type="number"
+        class="form-input"
+        name="salary"
+        [(ngModel)]="model.salary"
+        min="1"
+        required
+        #salary="ngModel"
+      />
+
+      <span class="error" *ngIf="salary.touched && salary.errors">
+        <span *ngIf="salary.errors['required']">Salary is required</span>
+        <span *ngIf="salary.errors['min']">Salary cannot be less than 1</span>
+      </span>
+    </div>
+
+
+    <!-- JOINED -->
+    <div class="form-group">
+      <label>Joined On <span class="required">*</span></label>
+
+      <input 
+        type="date"
+        class="form-input"
+        name="joinedOn"
+        [(ngModel)]="model.joinedOn"
+        required
+        [max]="today"
+        #joinedOn="ngModel"
+      />
+
+      <span class="error" *ngIf="joinedOn.touched && joinedOn.errors">
+        <span *ngIf="joinedOn.errors['required']">Joining date is required</span>
+        <span *ngIf="joinedOn.errors['max']">Future date not allowed</span>
+      </span>
+    </div>
+
+
+    <!-- DEPARTMENT -->
+    <div class="form-group">
+      <label>Department <span class="required">*</span></label>
+
+      <select 
+        name="departmentId"
+        [(ngModel)]="model.departmentId"
+        required
+        #departmentId="ngModel"
+      >
+        <option value="">Select Department</option>
+        <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+      </select>
+
+      <span class="error" *ngIf="departmentId.value=='' && departmentId.touched">
+        Department is required
+      </span>
+    </div>
+
+
+    <!-- SKILLS -->
+    <div class="form-group">
+      <label>Skills <span class="required">*</span></label>
+
+      <div class="skills-box" (blur)="skillsTouched=true" tabindex="0">
+        <label class="skill-item" *ngFor="let skill of skills">
+          <input 
+            type="checkbox"
+            [checked]="model.skillIds.includes(skill.id)"
+            (change)="toggleSkill(skill.id,$event)"
+          />
+          <span>{{ skill.name }}</span>
+        </label>
+      </div>
+
+      <span class="error" *ngIf="(skillsTouched || form.submitted) && model.skillIds.length==0">
+        Select at least one skill
+      </span>
+    </div>
+
+
+    <button type="submit" class="save-btn">Update</button>
+
+  </form>
+</div>

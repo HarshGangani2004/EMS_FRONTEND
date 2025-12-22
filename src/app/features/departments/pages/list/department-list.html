@@ -1,0 +1,67 @@
+<div class="department-container">
+
+  <!-- Header -->
+  <div class="header-row">
+    <h2>Departments</h2>
+
+    <div class="header-actions">
+      <input type="text" class="search-input" placeholder="Search departments..." [(ngModel)]="searchText"
+        (input)="filterDepartments()" />
+
+      <button class="add-btn" *hasPermission="'department.create'" (click)="create()">
+        + Add Department
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="department-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Department Name</th>
+          <th *ngIf="isAdmin">Created By</th>
+
+          <!-- SINGLE HEAD -->
+          <th *ngIf="hasAnyActionPermission()" class="actions-header">
+            Actions
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let d of departments; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ d.name }}</td>
+          <td *ngIf="isAdmin">{{ d.createdBy }}</td>
+          <!-- SINGLE CELL -->
+          <td *ngIf="hasAnyActionPermission()" class="action-buttons">
+
+            <!-- EDIT -->
+            <button class="icon-btn edit" title="Edit Department" *hasPermission="'department.edit'"
+              (click)="edit(d.id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <!-- DELETE -->
+            <button class="icon-btn delete" title="Delete Department" *hasPermission="'department.delete'"
+              (click)="delete(d.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button [disabled]="page === 1" (click)="prevPage()">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button [disabled]="page === totalPages" (click)="nextPage()">Next</button>
+  </div>
+
+</div>

@@ -1,0 +1,34 @@
+<div class="form-container">
+  <h2>Edit User</h2>
+
+  <form (ngSubmit)="onSubmit()">
+
+    <label>Full Name</label>
+    <input
+      type="text"
+      [(ngModel)]="model.fullName"
+      name="fullName"
+      required
+      readonly
+    />
+
+    <label>Email</label>
+    <input
+      type="email"
+      [(ngModel)]="model.email"
+      name="email"
+      readonly
+    />
+
+    <!-- ROLE DROPDOWN -->
+    <label>Role</label>
+    <select [(ngModel)]="model.role" name="role" required>
+      <option *ngFor="let r of roles" [value]="r.name">
+        {{ r.name }}
+      </option>
+    </select>
+
+    <button class="btn-save">Update User</button>
+  </form>
+</div>
+ i 

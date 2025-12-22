@@ -1,0 +1,244 @@
+/* ================= Employee Container ================ */
+.employee-container {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  margin: 25px auto;
+  width: 100%;
+  max-width: 1300px;
+  border: 1px solid #e5e7eb;
+}
+
+/* ================= Header Row ================ */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.header-row h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 🔍 SEARCH INPUT */
+.search-input {
+  padding: 10px 14px;
+  width: 230px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.search-input:focus {
+  border-color: #4F46E5;
+  background: white;
+  box-shadow: 0 0 6px rgba(79,70,229,0.25);
+  outline: none;
+}
+
+/* Add Button */
+.add-btn {
+  background: #374151;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.25s;
+  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
+}
+
+.add-btn:hover {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+/* ================= Table ================ */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.employee-table th {
+  background: #F3F4F6;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* 👇 Center "Actions" column text */
+/* Center ONLY Actions header */
+.employee-table th.actions-header {
+  text-align: center;
+}
+
+/* Keep Skills & all normal columns LEFT aligned */
+.employee-table th,
+.employee-table td {
+  text-align: left;
+}
+
+/* Center ONLY action buttons using flex */
+.employee-table td.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.employee-table td {
+  padding: 14px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: #374151;
+  transition: 0.2s;
+}
+
+/* 👇 Center actions cell & give spacing */
+/* ===== ICON ACTION BUTTONS (EMPLOYEE SAME AS TASK) ===== */
+
+/* ACTION CELL */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Compact grouped buttons (NOT a big box) */
+.action-buttons {
+  gap: 0;
+}
+
+/* Button base */
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+/* Rounded only on edges */
+.icon-btn:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.icon-btn:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.icon-btn:not(:last-child) {
+  border-right: none;
+}
+
+/* ICON COLORS (DEFAULT) */
+.icon-btn.view { color: #2563eb; }
+.icon-btn.edit { color: #047857; }
+.icon-btn.delete { color: #dc2626; }
+.icon-btn.success { color: #16a34a; }
+
+/* HOVER — CLEAN & SUBTLE */
+.icon-btn.view:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+.icon-btn.edit:hover {
+  background: #047857;
+  color: #ffffff;
+}
+.icon-btn.delete:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+.icon-btn.success:hover {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+
+
+
+.employee-table tr:hover td {
+  background: #F9FAFB;
+}
+
+/* Action Buttons */
+
+
+/* ================= Pagination ================ */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 22px;
+  gap: 12px;
+}
+
+.pagination button {
+  background: #374151;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  background: #9CA3AF;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ================= Responsive ================ */
+@media (max-width: 768px) {
+  .header-row { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .header-actions { width: 100%; justify-content: space-between; }
+  .search-input { width: 60%; }
+  .add-btn { width: 35%; }
+}
+
+@media (max-width: 500px) {
+  .search-input { width: 100%; }
+  .add-btn { width: 100%; }
+  .header-actions { flex-direction: column; gap: 10px; width: 100%; }
+}

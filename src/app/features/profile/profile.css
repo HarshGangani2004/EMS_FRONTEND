@@ -1,0 +1,17 @@
+.profile-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.profile-box {
+  padding: 20px;
+  border-radius: 10px;
+  background: #f7f7f7;
+  box-shadow: 0 0 10px #ddd;
+  font-size: 18px;
+}
+
+p {
+  margin: 12px 0;
+}

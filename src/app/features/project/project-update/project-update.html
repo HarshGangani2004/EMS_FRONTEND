@@ -1,0 +1,113 @@
+<div class="form-container" *ngIf="!loading">
+
+  <h2>Edit Project</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+
+    <!-- PROJECT NAME -->
+    <div class="form-group">
+      <label>Project Name <span class="required">*</span></label>
+
+      <input
+        type="text"
+        class="form-input"
+        name="name"
+        [(ngModel)]="model.name"
+        required
+        minlength="2"
+        maxlength="50"
+        #nameRef="ngModel"
+      />
+
+      <span class="error" *ngIf="nameRef.touched && nameRef.errors">
+        <span *ngIf="nameRef.errors['required']">Project name is required</span>
+        <span *ngIf="nameRef.errors['minlength']">Minimum 2 characters required</span>
+      </span>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+      <label>Description <span class="required">*</span></label>
+
+      <input
+        type="text"
+        class="form-input"
+        name="description"
+        [(ngModel)]="model.description"
+        required
+        minlength="10"
+        #descRef="ngModel"
+      />
+
+      <span class="error" *ngIf="descRef.touched && descRef.errors">
+        <span *ngIf="descRef.errors['required']">Description is required</span>
+        <span *ngIf="descRef.errors['minlength']">Minimum 10 characters required</span>
+      </span>
+    </div>
+
+    <!-- START DATE -->
+    <div class="form-group">
+      <label>Start Date <span class="required">*</span></label>
+
+      <input
+        type="date"
+        class="form-input"
+        name="startDate"
+        [(ngModel)]="model.startDate"
+        required
+        #startDateRef="ngModel"
+      />
+
+      <span class="error" *ngIf="startDateRef.touched && startDateRef.errors">
+        Start date is required
+      </span>
+    </div>
+
+    <!-- END DATE -->
+    <!-- END DATE -->
+<div class="form-group">
+  <label>End Date <span class="required">*</span></label>
+
+  <input
+    type="date"
+    class="form-input"
+    name="endDate"
+    [(ngModel)]="model.endDate"
+    required
+    #endDateRef="ngModel"
+  />
+
+  <!-- REQUIRED ERROR -->
+  <span class="error"
+        *ngIf="endDateRef.touched && endDateRef.errors?.['required']">
+    End date is required
+  </span>
+
+  <!-- AFTER START DATE ERROR -->
+  <span class="error"
+        *ngIf="
+          endDateRef.touched &&
+          model.startDate &&
+          model.endDate &&
+          model.endDate < model.startDate
+        ">
+    End date must be after start date
+  </span>
+</div>
+
+
+    <!-- SUBMIT -->
+    <button
+      type="submit"
+      class="save-btn"
+      [disabled]="saving || !isEndDateValid()">
+      {{ saving ? 'Updating...' : 'Update Project' }}
+    </button>
+
+  </form>
+
+</div>
+
+<div class="loading" *ngIf="loading">
+  Loading project...
+</div>

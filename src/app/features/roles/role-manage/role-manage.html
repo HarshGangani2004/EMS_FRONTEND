@@ -1,0 +1,22 @@
+<div class="manage-role-container">
+
+  <h2>Manage Role</h2>
+
+  <div class="permissions-box">
+
+    <div class="perm-item" *ngFor="let p of allPermissions">
+      <label class="perm-label">
+        <input type="checkbox"
+               [checked]="selectedPermissions.includes(p.id)"
+               (change)="toggle(p.id)" />
+        {{ p.name }}
+      </label>
+    </div>
+
+  </div>
+
+  <button class="btn-save" (click)="save()">
+    Save Changes
+  </button>
+
+</div>

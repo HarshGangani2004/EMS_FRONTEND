@@ -1,0 +1,155 @@
+/* ==============================
+   MAIN CONTAINER
+============================== */
+.form-container {
+  width: 100%;
+  max-width: 560px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* ==============================
+   HEADER
+============================== */
+.form-container h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+
+/* ==============================
+   ROW (MOBILE FIRST)
+============================== */
+.view-row {
+  display: flex;
+  flex-direction: column;        /* 📱 MOBILE */
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* LABEL */
+.view-row label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* VALUE BOX */
+.view-row .value {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+
+  font-size: 14px;
+  color: #0f172a;
+  line-height: 1.6;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* DESCRIPTION */
+.value.description {
+  line-height: 1.7;
+}
+
+/* ==============================
+   STATUS BADGE
+============================== */
+.status-badge {
+  display: inline-block;
+  padding: 0px 0px;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.status-badge.pending {
+  padding-left: 0%;
+
+}
+
+.status-badge.progress {
+
+  color: #1d4ed8;
+}
+
+.status-badge.completed {
+
+  color: #047857;
+}
+
+/* ==============================
+   ACTION ROW
+============================== */
+.action-row {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #374151;
+  color: white;
+}
+
+
+
+/* ==============================
+   DESKTOP (ROW LAYOUT)
+============================== */
+@media (min-width: 768px) {
+
+  .form-container {
+    padding: 28px 32px;
+  }
+
+  .view-row {
+    flex-direction: row;        /* 💻 DESKTOP */
+    align-items: center;
+    gap: 16px;
+  }
+
+  .view-row label {
+    min-width: 150px;           /* fixed label width */
+    margin-bottom: 0;
+  }
+
+  .view-row .value {
+    flex: 1;                    /* value fills remaining space */
+  }
+
+  .action-row {
+    justify-content: flex-end;
+  }
+
+  .btn {
+    width: auto;
+    padding: 10px 22px;
+  }
+}
+
+/* ==============================
+   LOADING
+============================== */
+.loading {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #64748b;
+}

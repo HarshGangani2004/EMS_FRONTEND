@@ -1,0 +1,104 @@
+<div class="form-container">
+
+  <h2>Apply Leave</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+
+    <!-- LEAVE TYPE -->
+    <div class="form-group">
+      <label>Leave Type <span class="required">*</span></label>
+
+      <select
+        class="form-input"
+        name="leaveType"
+        [(ngModel)]="model.leaveType"
+        required
+        #typeRef="ngModel">
+
+        <option value="">-- Select Leave Type --</option>
+        <option value="Casual">Casual</option>
+        <option value="Sick">Sick</option>
+        <option value="Paid">Paid</option>
+        <option value="Unpaid">Unpaid</option>
+      </select>
+
+      <span class="error" *ngIf="typeRef.touched && typeRef.invalid">
+        Leave type is required
+      </span>
+    </div>
+
+    <!-- FROM DATE -->
+    <div class="form-group">
+      <label>From Date <span class="required">*</span></label>
+
+      <input
+        type="date"
+        class="form-input"
+        name="fromDate"
+        [(ngModel)]="model.fromDate"
+        required
+        #fromRef="ngModel"
+      />
+
+      <span class="error" *ngIf="fromRef.touched && fromRef.invalid">
+        From date is required
+      </span>
+    </div>
+
+    <!-- TO DATE -->
+    <div class="form-group">
+      <label>To Date <span class="required">*</span></label>
+
+      <input
+        type="date"
+        class="form-input"
+        name="toDate"
+        [(ngModel)]="model.toDate"
+        required
+        #toRef="ngModel"
+      />
+
+      <span class="error"
+            *ngIf="toRef.touched && (toRef.invalid || !isDateValid())">
+        To date must be after From date
+      </span>
+    </div>
+
+    <!-- REASON -->
+    <div class="form-group">
+      <label>Reason <span class="required">*</span></label>
+
+      <textarea
+        class="form-input"
+        rows="3"
+        name="reason"
+        [(ngModel)]="model.reason"
+        required
+        minlength="5"
+        #reasonRef="ngModel">
+      </textarea>
+
+      <span class="error" *ngIf="reasonRef.touched && reasonRef.errors">
+
+        <span *ngIf="reasonRef.errors['required']">
+          Reason is required
+        </span>
+
+        <span *ngIf="reasonRef.errors['minlength']">
+          Reason must be at least 5 characters
+        </span>
+
+      </span>
+    </div>
+
+    <!-- SUBMIT -->
+    <button
+      type="submit"
+      class="save-btn"
+      [disabled]="saving || !isDateValid()">
+      {{ saving ? 'Applying...' : 'Apply Leave' }}
+    </button>
+
+  </form>
+
+</div>

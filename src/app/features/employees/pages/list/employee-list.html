@@ -1,0 +1,73 @@
+<div class="employee-container">
+
+  <div class="header-row">
+    <h2>Employees</h2>
+
+    <div class="header-actions">
+      <input type="text" class="search-input" placeholder="Search employees..." [(ngModel)]="searchText"
+        (input)="onSearch()" />
+
+      <button class="add-btn" *hasPermission="'employee.create'" (click)="create()" >
+        + Add Employee
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="employee-table" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Joined On</th>
+          <th>Department</th>
+          <th  *ngIf="canViewSalary">Salary</th>
+          <th>Skills</th>
+          <th *ngIf="isAdmin">Created By</th>
+
+          <!-- ONLY IF EDIT OR DELETE -->
+          <th *ngIf="hasAnyActionPermission()"  class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let emp of employees; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ emp.fullName }}</td>
+          <td>{{ emp.email }}</td>
+          <td>{{ emp.joinedOn | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ emp.departmentName || 'No Department' }}</td>
+          <td *hasPermission="'salary'">{{ emp.salary | currency:'INR' }}</td>
+          <td>{{ getSkillNames(emp.skills) }}</td>
+          <td *ngIf="isAdmin">{{ emp.createdBy }}</td>
+
+          <!-- ONLY SHOW CELL IF ANY PERMISSION -->
+          <td *ngIf="hasAnyActionPermission()" class="action-buttons">
+
+            <!-- EDIT -->
+            <button class="icon-btn edit" title="Edit Employee" *hasPermission="'employee.edit'" (click)="edit(emp.id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <!-- DELETE -->
+            <button class="icon-btn delete" title="Delete Employee" *hasPermission="'employee.delete'"
+              (click)="delete(emp.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+
+          </td>
+
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button [disabled]="page === 1" (click)="prevPage()">Prev</button>
+    <span>Page {{ page }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+    <button [disabled]="page * pageSize >= totalItems" (click)="nextPage()">Next</button>
+  </div>
+
+</div>

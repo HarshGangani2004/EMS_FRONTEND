@@ -1,0 +1,92 @@
+<div class="department-container">
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <h2>Leave Requests</h2>
+  </div>
+
+  <p *ngIf="loading">Loading leaves...</p>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="department-table">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee</th>
+          <th>Leave Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let l of leaves; let i = index">
+          <!-- 🔥 PAGINATION SAFE INDEX -->
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+
+          <td>{{ l.userName }}</td>
+          <td>{{ l.leaveType }}</td>
+          <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
+
+          <!-- STATUS -->
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'pending': l.status === 'Pending',
+                'approved': l.status === 'Approved',
+                'rejected': l.status === 'Rejected'
+              }">
+              {{ l.status }}
+            </span>
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="action-buttons">
+
+            <!-- VIEW -->
+            <button class="icon-btn view" (click)="view(l.id)">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <!-- APPROVE / REJECT -->
+            <ng-container *hasPermission="'leave.update.status'">
+              <button
+                class="icon-btn success"
+                *ngIf="l.status === 'Pending'"
+                (click)="updateStatus(l.id, 'Approved')">
+                <i class="bi bi-check-lg"></i>
+              </button>
+
+              <button
+                class="icon-btn delete"
+                *ngIf="l.status === 'Pending'"
+                (click)="updateStatus(l.id, 'Rejected')">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </ng-container>
+
+          </td>
+        </tr>
+
+        <tr *ngIf="leaves.length === 0">
+          <td colspan="7" class="no-data">No leave requests found</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="page === 1">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+  </div>
+
+</div>

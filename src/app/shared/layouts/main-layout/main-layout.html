@@ -1,0 +1,113 @@
+<!-- MOBILE TOGGLE BUTTON -->
+<button class="mobile-toggle" (click)="toggleSidebar()">
+  <i class="bi bi-list"></i>
+</button>
+
+<div class="overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+<div class="layout-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+
+    <div class="logo-area">
+
+      <button class="mobile-toggle" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <h2>EMS</h2>
+      <p class="ems">Management System</p>
+
+    </div>
+
+
+    <ul class="menu">
+      <li routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </li>
+
+      <li routerLink="/employees" routerLinkActive="active" *hasPermission="'employee.view'">
+        <i class="bi bi-people"></i> Employees
+      </li>
+
+      <li routerLink="/department" routerLinkActive="active" *hasPermission="'department.view'">
+        <i class="bi bi-building"></i> Departments
+      </li>
+
+      <li routerLink="/skills" routerLinkActive="active" *hasPermission="'skill.view'">
+        <i class="bi bi-layers"></i> Skills
+      </li>
+
+      <li routerLink="/project/list" routerLinkActive="active" *hasPermission="'project.view'">
+        <i class="bi bi-kanban"></i> Projects
+      </li>
+
+      <li routerLink="/task/list" routerLinkActive="active" *hasPermission="'task.view'">
+        <i class="bi bi-list-task"></i> Tasks
+      </li>
+      <li routerLink="/leave/my" routerLinkActive="active" *hasPermission="'leave.view'">
+        <i class="bi bi-calendar-check"></i> My Leaves
+      </li>
+
+      <li routerLink="/leave/all" routerLinkActive="active" *hasPermission="'leave.view.all'">
+        <i class="bi bi-calendar2-week"></i> All Leaves
+      </li>
+
+
+      <li routerLink="/users" routerLinkActive="active" *hasPermission="'user.view'">
+        <i class="bi bi-person-circle"></i> Users
+      </li>
+
+      <li routerLink="/roles" routerLinkActive="active" *hasPermission="'role.manage'">
+        <i class="bi bi-shield-lock"></i> Roles
+      </li>
+
+
+    </ul>
+
+
+  </aside>
+
+
+  <!-- MAIN AREA -->
+  <main class="content-area">
+
+    <!-- HEADER -->
+    <div class="header-bar">
+
+      <h3 class="page-title">Employee Management System</h3>
+
+      <div class="header-actions">
+
+        <!-- 🔥 USER DROPDOWN -->
+        <div class="user-dropdown">
+
+          <div class="user-toggle" (click)="toggleUserMenu()">
+            <i class="bi bi-person-circle"></i>
+          </div>
+
+          <div class="user-menu" *ngIf="userMenuOpen">
+            <button class="item" (click)="openProfile(); closeDropdown()">
+              <i class="bi bi-person"></i> Profile
+            </button>
+
+            <hr>
+
+            <button class="item logout" (click)="logout(); closeDropdown()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ROUTER CONTENT -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </main>
+</div>

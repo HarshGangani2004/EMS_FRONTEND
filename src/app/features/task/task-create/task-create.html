@@ -1,0 +1,137 @@
+<div class="form-container">
+
+  <h2>Create Task</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+
+    <!-- PROJECT -->
+    <div class="form-group">
+      <label>Project <span class="required">*</span></label>
+
+      <select
+        class="form-input"
+        name="projectId"
+        [(ngModel)]="model.projectId"
+        required
+        #projectRef="ngModel">
+        <option value="">-- Select Project --</option>
+        <option *ngFor="let p of projects" [value]="p.id">
+          {{ p.name }}
+        </option>
+      </select>
+
+      <span class="error" *ngIf="projectRef.touched && projectRef.errors">
+        Project is required
+      </span>
+    </div>
+
+    <!-- ASSIGNED TO -->
+    <div class="form-group">
+      <label>Assign To <span class="required">*</span></label>
+
+      <select
+        class="form-input"
+        name="assignedTo"
+        [(ngModel)]="model.assignedTo"
+        required
+        #assignedRef="ngModel">
+        <option value="">-- Select Employee --</option>
+        <option *ngFor="let e of employees" [value]="e.id">
+          {{ e.fullName }}
+        </option>
+      </select>
+
+      <span class="error" *ngIf="assignedRef.touched && assignedRef.errors">
+        Employee is required
+      </span>
+    </div>
+
+    <!-- TITLE -->
+    <div class="form-group">
+      <label>Task Title <span class="required">*</span></label>
+
+      <input
+        type="text"
+        class="form-input"
+        name="title"
+        [(ngModel)]="model.title"
+        required
+        minlength="3"
+        #titleRef="ngModel"
+        (blur)="model.title = model.title?.trim()"
+      />
+
+      <span class="error" *ngIf="titleRef.touched && titleRef.errors">
+        <span *ngIf="titleRef.errors['required']">Title is required</span>
+        <span *ngIf="titleRef.errors['minlength']">Minimum 3 characters required</span>
+      </span>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+      <label>Description <span class="required">*</span></label>
+
+      <input
+        class="form-input"
+        name="description"
+        [(ngModel)]="model.description"
+        required
+        minlength="10"
+        #descRef="ngModel"
+      />
+
+      <span class="error" *ngIf="descRef.touched && descRef.errors">
+        <span *ngIf="descRef.errors['required']">Description is required</span>
+        <span *ngIf="descRef.errors['minlength']">Minimum 10 characters required</span>
+      </span>
+    </div>
+
+    <!-- PRIORITY -->
+    <div class="form-group">
+      <label>Priority <span class="required">*</span></label>
+
+      <select
+        class="form-input"
+        name="priority"
+        [(ngModel)]="model.priority"
+        required
+        #priorityRef="ngModel">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+
+      <span class="error" *ngIf="priorityRef.touched && priorityRef.errors">
+        Priority is required
+      </span>
+    </div>
+
+    <!-- DUE DATE -->
+    <div class="form-group">
+      <label>Due Date <span class="required">*</span></label>
+
+      <input
+        type="date"
+        class="form-input"
+        name="dueDate"
+        [(ngModel)]="model.dueDate"
+        required
+        #dueDateRef="ngModel"
+      />
+
+      <span class="error" *ngIf="dueDateRef.touched && dueDateRef.errors">
+        Due date is required
+      </span>
+    </div>
+
+    <!-- SUBMIT -->
+    <button
+      type="submit"
+      class="save-btn"
+      [disabled]="saving">
+      {{ saving ? 'Saving...' : 'Create Task' }}
+    </button>
+
+  </form>
+
+</div>

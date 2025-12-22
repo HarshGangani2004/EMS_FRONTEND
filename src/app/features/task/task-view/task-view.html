@@ -1,0 +1,72 @@
+<div class="form-container" *ngIf="!loading && task">
+
+  <h2>Task Details</h2>
+
+  <div class="view-row">
+    <label>Title</label>
+    <div class="value">{{ task.title }}</div>
+  </div>
+
+  <div class="view-row">
+    <label>Project</label>
+    <div class="value">{{ task.projectName || '—' }}</div>
+  </div>
+
+  <div class="view-row">
+    <label>Assigned To</label>
+    <div class="value">{{ task.assignedToName || '—' }}</div>
+  </div>
+
+  <div class="view-row">
+    <label>Description</label>
+    <div class="value description">
+      {{ task.description || '—' }}
+    </div>
+  </div>
+
+  <div class="view-row">
+    <label>Priority</label>
+    <div class="value">{{ task.priority | titlecase }}</div>
+  </div>
+
+  <div class="view-row">
+    <label>Status</label>
+    <div class="value">
+      <span
+        class="status-badge"
+        [ngClass]="{
+          'pending': task.status === 'Pending',
+          'progress': task.status === 'In Progress',
+          'completed': task.status === 'Completed'
+        }">
+        {{ task.status }}
+      </span>
+    </div>
+  </div>
+
+  <div class="view-row">
+    <label>Due Date</label>
+    <div class="value">
+      {{ task.dueDate | date:'dd-MM-yyyy' }}
+    </div>
+  </div>
+
+  <div class="view-row">
+    <label>Created By</label>
+    <div class="value">{{ task.createdBy || '—' }}</div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="action-row">
+    <button class="btn btn-secondary" (click)="goBack()">
+     Back
+    </button>
+
+    
+  </div>
+
+</div>
+
+<div class="loading" *ngIf="loading">
+  Loading task details...
+</div>

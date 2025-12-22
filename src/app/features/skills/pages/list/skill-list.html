@@ -1,0 +1,61 @@
+<div class="department-container">
+
+  <div class="header-row">
+    <h2>Skills</h2>
+
+    <div class="header-actions">
+      <input type="text" class="search-input" placeholder="Search skills..." [(ngModel)]="searchText"
+        (input)="filterSkills()" />
+
+      <button class="add-btn" *hasPermission="'skill.create'" (click)="create()">
+        + Add Skill
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="department-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Skill Name</th>
+          <th *ngIf="isAdmin">Created By</th>
+
+          <th *ngIf="hasAnyActionPermission()" class="actions-header">
+            Actions
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let s of skills; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ s.name }}</td>
+          <td *ngIf="isAdmin">{{ s.createdBy }}</td>
+
+          <td *ngIf="hasAnyActionPermission()" class="action-buttons">
+
+            <!-- EDIT -->
+            <button class="icon-btn edit" title="Edit Skill" *hasPermission="'skill.edit'" (click)="edit(s.id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <!-- DELETE -->
+            <button class="icon-btn delete" title="Delete Skill" *hasPermission="'skill.delete'" (click)="delete(s.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button [disabled]="page === 1" (click)="prevPage()">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button [disabled]="page === totalPages" (click)="nextPage()">Next</button>
+  </div>
+
+</div>
