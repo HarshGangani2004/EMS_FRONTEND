@@ -6,22 +6,59 @@
 
     <div class="header-actions">
 
-      <!-- SEARCH -->
+      <!-- ✅ SEARCH (EMPLOYEE LIST STYLE) -->
       <input
         type="text"
         class="search-input"
-        placeholder="Search leaves..."
-        [(ngModel)]="search"
-        (input)="onSearch()" />
+        placeholder="Search by leave type or status..."
+        [(ngModel)]="searchText" />
 
-      <!-- APPLY LEAVE -->
       <button
         class="add-btn"
         routerLink="/leave/create"
         *hasPermission="'leave.create'">
         + Apply Leave
       </button>
+
     </div>
+  </div>
+
+  <!-- 🔥 FILTER BAR (UNCHANGED – BACKEND BASED) -->
+  <div class="filter-bar">
+
+    <!-- YEAR -->
+    <select [(ngModel)]="filters.year">
+      <option [ngValue]="null">Year</option>
+      <option *ngFor="let y of years" [ngValue]="y">{{ y }}</option>
+    </select>
+
+    <!-- MONTH -->
+    <select [(ngModel)]="filters.month">
+      <option [ngValue]="null">Month</option>
+      <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="m">
+        {{ m }}
+      </option>
+    </select>
+
+    <!-- STATUS -->
+    <select [(ngModel)]="filters.status" class="x">
+      <option value="">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+      <option value="Unpaid">Unpaid</option>
+    </select>
+
+    <!-- LEAVE TYPE -->
+    <select [(ngModel)]="filters.leaveType">
+      <option value="">All Leave Types</option>
+      <option *ngFor="let t of leaveTypes" [value]="t">{{ t }}</option>
+    </select>
+
+    <!-- FILTER ACTIONS -->
+    <button class="btn-apply" (click)="applyFilter()">Apply</button>
+    <button class="btn-clear" (click)="resetFilter()">Reset</button>
+
   </div>
 
   <!-- LOADING -->
@@ -44,67 +81,41 @@
 
       <tbody>
 
-        <tr *ngFor="let l of leaves; let i = index">
-          <!-- 🔥 FIXED INDEX (PAGINATION SAFE) -->
+        <!-- ✅ SEARCHED DATA (FRONTEND FILTER) -->
+        <tr *ngFor="let l of filteredLeaves; let i = index">
           <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-
           <td>{{ l.leaveType }}</td>
           <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
 
-          <!-- STATUS -->
           <td>
-            <span
-              class="status-badge"
-              [ngClass]="{
-                'pending': l.status === 'Pending',
-                'approved': l.status === 'Approved',
-                'rejected': l.status === 'Rejected'
-              }">
+            <span class="status-badge" [ngClass]="l.status.toLowerCase()">
               {{ l.status }}
             </span>
           </td>
 
-          <!-- ACTIONS -->
           <td class="action-buttons">
-
-            <!-- VIEW -->
-            <button
-              class="icon-btn view"
-              title="View Leave"
-              (click)="view(l.id)">
+            <button class="icon-btn view" (click)="view(l.id)">
               <i class="bi bi-eye"></i>
             </button>
 
-            <!-- EDIT (PENDING ONLY) -->
             <ng-container *ngIf="l.status === 'Pending'">
               <ng-container *hasPermission="'leave.update'">
-                <button
-                  class="icon-btn edit"
-                  title="Edit Leave"
-                  (click)="edit(l.id)">
+                <button class="icon-btn edit" (click)="edit(l.id)">
                   <i class="bi bi-pencil"></i>
                 </button>
               </ng-container>
-            </ng-container>
 
-            <!-- DELETE (PENDING ONLY) -->
-            <ng-container *ngIf="l.status === 'Pending'">
               <ng-container *hasPermission="'leave.delete'">
-                <button
-                  class="icon-btn delete"
-                  title="Delete Leave"
-                  (click)="delete(l.id)">
+                <button class="icon-btn delete" (click)="delete(l.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </ng-container>
             </ng-container>
-
           </td>
         </tr>
 
-        <!-- NO DATA -->
-        <tr *ngIf="leaves.length === 0">
+        <tr *ngIf="filteredLeaves.length === 0">
           <td colspan="6" class="no-data">No leaves found</td>
         </tr>
 
@@ -113,22 +124,10 @@
   </div>
 
   <!-- PAGINATION -->
-  <div class="pagination" *ngIf="!loading && totalPages > 1">
-    <button
-      (click)="prevPage()"
-      [disabled]="page === 1">
-      Prev
-    </button>
-
-    <span>
-      Page {{ page }} of {{ totalPages }}
-    </span>
-
-    <button
-      (click)="nextPage()"
-      [disabled]="page === totalPages">
-      Next
-    </button>
+  <div class="pagination" *ngIf="!loading">
+    <button (click)="prevPage()" [disabled]="page === 1">Prev</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
   </div>
 
 </div>

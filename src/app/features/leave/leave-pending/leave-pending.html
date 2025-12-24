@@ -5,8 +5,49 @@
     <h2>Leave Requests</h2>
   </div>
 
+  <!-- 🔥 FILTER BAR (SAME AS MY LEAVES) -->
+  <div class="filter-bar">
+
+    <!-- YEAR -->
+    <select [(ngModel)]="filters.year">
+      <option [ngValue]="null">Year</option>
+      <option *ngFor="let y of years" [ngValue]="y">
+        {{ y }}
+      </option>
+    </select>
+
+    <!-- MONTH -->
+    <select [(ngModel)]="filters.month">
+      <option [ngValue]="null">Month</option>
+      <option *ngFor="let m of months" [ngValue]="m.value">
+        {{ m.label }}
+      </option>
+    </select>
+
+    <!-- STATUS -->
+    <select [(ngModel)]="filters.status">
+      <option value="">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+
+    <!-- EMPLOYEE NAME -->
+    <input
+      type="text"
+      placeholder="Employee name"
+      [(ngModel)]="filters.userName" />
+
+    <!-- ACTIONS -->
+    <button class="btn-apply" (click)="applyFilter()">Apply</button>
+    <button class="btn-clear" (click)="resetFilter()">Reset</button>
+
+  </div>
+
+  <!-- LOADING -->
   <p *ngIf="loading">Loading leaves...</p>
 
+  <!-- TABLE -->
   <div class="table-wrapper" *ngIf="!loading">
     <table class="department-table">
 
@@ -25,15 +66,12 @@
       <tbody>
 
         <tr *ngFor="let l of leaves; let i = index">
-          <!-- 🔥 PAGINATION SAFE INDEX -->
           <td>{{ (page - 1) * pageSize + i + 1 }}</td>
-
           <td>{{ l.userName }}</td>
           <td>{{ l.leaveType }}</td>
           <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
 
-          <!-- STATUS -->
           <td>
             <span
               class="status-badge"
@@ -46,7 +84,6 @@
             </span>
           </td>
 
-          <!-- ACTIONS -->
           <td class="action-buttons">
 
             <!-- VIEW -->
@@ -56,26 +93,32 @@
 
             <!-- APPROVE / REJECT -->
             <ng-container *hasPermission="'leave.update.status'">
-              <button
-                class="icon-btn success"
-                *ngIf="l.status === 'Pending'"
-                (click)="updateStatus(l.id, 'Approved')">
-                <i class="bi bi-check-lg"></i>
-              </button>
+              <ng-container *ngIf="l.status === 'Pending'">
 
-              <button
-                class="icon-btn delete"
-                *ngIf="l.status === 'Pending'"
-                (click)="updateStatus(l.id, 'Rejected')">
-                <i class="bi bi-x-lg"></i>
-              </button>
+                <button
+                  class="icon-btn success"
+                  title="Approve"
+                  (click)="updateStatus(l.id, 'Approved')">
+                  <i class="bi bi-check-lg"></i>
+                </button>
+
+                <button
+                  class="icon-btn delete"
+                  title="Reject"
+                  (click)="updateStatus(l.id, 'Rejected')">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+
+              </ng-container>
             </ng-container>
 
           </td>
         </tr>
 
         <tr *ngIf="leaves.length === 0">
-          <td colspan="7" class="no-data">No leave requests found</td>
+          <td colspan="7" class="no-data">
+            No leave requests found
+          </td>
         </tr>
 
       </tbody>

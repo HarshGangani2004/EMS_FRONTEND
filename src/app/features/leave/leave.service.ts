@@ -24,41 +24,57 @@ export class LeaveService {
   }
 
   // =========================
-  // USER: GET MY LEAVES
+  // USER: GET MY LEAVES (FILTERED)
   // =========================
-    getMyLeavesPaged(
+  getMyLeavesPaged(
     page: number,
     pageSize: number,
-    search: string = ''
+    filter: {
+      year?: number | null;
+      month?: number | null;
+      status?: string;
+      leaveType?: string;
+    }
   ): Observable<any> {
 
     let params = new HttpParams()
       .set('page', page)
       .set('pageSize', pageSize);
 
-    if (search) {
-      params = params.set('search', search);
-    }
+    // 🔥 ADD FILTERS DYNAMICALLY
+    Object.entries(filter).forEach(([key, value]) => {
+      if (value !== null && value !== '') {
+        params = params.set(key, value);
+      }
+    });
 
     return this.http.get(`${this.baseUrl}/my`, { params });
   }
 
   // =========================
-  // ADMIN: GET ALL LEAVES
+  // ADMIN: GET ALL LEAVES (FILTERED)
   // =========================
-   getAllLeavesPaged(
+  getAllLeavesPaged(
     page: number,
     pageSize: number,
-    search: string = ''
+    filter: {
+      year?: number | null;
+      month?: number | null;
+      status?: string;
+      leaveType?: string;
+      userName?: string;
+    }
   ): Observable<any> {
 
     let params = new HttpParams()
       .set('page', page)
       .set('pageSize', pageSize);
 
-    if (search) {
-      params = params.set('search', search);
-    }
+    Object.entries(filter).forEach(([key, value]) => {
+      if (value !== null && value !== '') {
+        params = params.set(key, value);
+      }
+    });
 
     return this.http.get(`${this.baseUrl}/all`, { params });
   }
@@ -99,9 +115,7 @@ export class LeaveService {
     id: number,
     status: 'Approved' | 'Rejected'
   ): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}/status`, {
-      status
-    });
+    return this.http.put(`${this.baseUrl}/${id}/status`, { status });
   }
 
   // =========================

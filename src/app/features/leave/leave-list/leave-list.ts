@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { LeaveService } from '../leave.service';
-import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+
+import { LeaveService } from '../leave.service';
+import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 
 @Component({
   selector: 'app-leave-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, HasPermissionDirective,FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    HasPermissionDirective
+  ],
   templateUrl: './leave-list.html',
   styleUrls: ['./leave-list.css']
 })
@@ -18,14 +24,23 @@ export class LeaveListComponent implements OnInit {
   leaves: any[] = [];
   loading = true;
 
-  // 🔥 PAGINATION
   page = 1;
   pageSize = 10;
-  totalItems = 0;
   totalPages = 1;
 
-  // 🔍 SEARCH
-  search = '';
+  // ✅ SEARCH (FRONTEND ONLY)
+  searchText = '';
+
+  filters = {
+    year: null as number | null,
+    month: null as number | null,
+    status: '',
+    leaveType: ''
+  };
+  openDropdown: string | null = null;
+
+  years: number[] = [];
+  leaveTypes: string[] = ['Casual', 'Sick', 'Paid', 'Unpaid'];
 
   constructor(
     private leaveService: LeaveService,
@@ -33,41 +48,62 @@ export class LeaveListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.generateYears();
     this.loadMyLeaves();
   }
 
-  // =========================
-  // LOAD LEAVES (PAGED)
-  // =========================
+  generateYears(): void {
+    const currentYear = new Date().getFullYear();
+    for (let i = 0; i < 4; i++) {
+      this.years.push(currentYear - i);
+    }
+  }
+
   loadMyLeaves(): void {
     this.loading = true;
 
     this.leaveService
-      .getMyLeavesPaged(this.page, this.pageSize, this.search)
+      .getMyLeavesPaged(this.page, this.pageSize, this.filters)
       .subscribe({
         next: (res) => {
           this.leaves = res.items;
-          this.totalItems = res.totalItems;
           this.totalPages = res.totalPages;
           this.loading = false;
         },
-        error: () => {
-          this.loading = false;
-        }
+        error: () => this.loading = false
       });
   }
 
-  // =========================
-  // SEARCH
-  // =========================
-  onSearch(): void {
-    this.page = 1;           // reset to first page
+  // ✅ FRONTEND SEARCH LOGIC
+  get filteredLeaves(): any[] {
+    if (!this.searchText.trim()) {
+      return this.leaves;
+    }
+
+    const text = this.searchText.toLowerCase();
+
+    return this.leaves.filter(l =>
+      l.leaveType?.toLowerCase().includes(text) ||
+      l.status?.toLowerCase().includes(text)
+    );
+  }
+
+  applyFilter(): void {
+    this.page = 1;
     this.loadMyLeaves();
   }
 
-  // =========================
-  // PAGINATION
-  // =========================
+  resetFilter(): void {
+    this.filters = {
+      year: null,
+      month: null,
+      status: '',
+      leaveType: ''
+    };
+    this.searchText = '';
+    this.applyFilter();
+  }
+
   nextPage(): void {
     if (this.page < this.totalPages) {
       this.page++;
@@ -82,9 +118,6 @@ export class LeaveListComponent implements OnInit {
     }
   }
 
-  // =========================
-  // ACTIONS
-  // =========================
   view(id: number): void {
     this.router.navigate(['/leave/view', id]);
   }
@@ -92,48 +125,64 @@ export class LeaveListComponent implements OnInit {
   edit(id: number): void {
     this.router.navigate(['/leave/update', id]);
   }
+  
+
+toggle(name: string) {
+  this.openDropdown = this.openDropdown === name ? null : name;
+}
+
+/* YEAR */
+selectYear(val: number | null) {
+  this.filters.year = val;
+  this.openDropdown = null;
+}
+
+/* MONTH */
+selectMonth(val: number | null) {
+  this.filters.month = val;
+  this.openDropdown = null;
+}
+
+/* STATUS */
+selectStatus(val: string) {
+  this.filters.status = val;
+  this.openDropdown = null;
+}
+
+/* LEAVE TYPE */
+selectLeaveType(val: string) {
+  this.filters.leaveType = val;
+  this.openDropdown = null;
+}
+
 
   delete(id: number): void {
-
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'This leave request will be permanently deleted!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete it',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6'
-  }).then((result) => {
-
-    if (result.isConfirmed) {
-
-      this.leaveService.deleteLeave(id).subscribe({
-        next: () => {
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Leave deleted successfully.',
-            timer: 1500,
-            showConfirmButton: false
-          });
-
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This leave request will be permanently deleted!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.leaveService.deleteLeave(id).subscribe(() => {
+          Swal.fire('Deleted!', 'Leave deleted successfully.', 'success');
           this.loadMyLeaves();
-        },
+        });
+      }
+    });
+  
+  }
+  showYear = false;
 
-        error: () => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Failed!',
-            text: 'Unable to delete leave. Please try again.'
-          });
-        }
-      });
+toggleYear() {
+  this.showYear = !this.showYear;
+}
 
-    }
-
-  });
+setYear(y: any) {
+  this.filters.year = y;
+  this.showYear = false;
 }
 
 }
+

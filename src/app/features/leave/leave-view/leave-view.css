@@ -36,7 +36,7 @@
 .view-row label {
   font-size: 12px;
   font-weight: 600;
-  color: #64748b;
+  color: #1f2937;
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
@@ -73,17 +73,18 @@
 
 .status-badge.pending {
   padding-left: 0%;
+  color: blue;
 
 }
 
 .status-badge.approved {
 
-  color: #1d4ed8;
+  color: green;
 }
 
 .status-badge.rejected {
 
-  color: #047857;
+  color: red;
 }
 
 /* ==============================
@@ -128,6 +129,7 @@
   .view-row label {
     min-width: 150px;           /* fixed label width */
     margin-bottom: 0;
+    
   }
 
   .view-row .value {

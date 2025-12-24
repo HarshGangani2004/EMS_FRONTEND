@@ -68,15 +68,15 @@
     <div class="form-group">
       <label>Reason <span class="required">*</span></label>
 
-      <textarea
+      <input
         class="form-input"
         rows="3"
         name="reason"
         [(ngModel)]="model.reason"
         required
         minlength="5"
-        #reasonRef="ngModel">
-      </textarea>
+        #reasonRef="ngModel"/>
+    
 
       <span class="error" *ngIf="reasonRef.touched && reasonRef.errors">
 
