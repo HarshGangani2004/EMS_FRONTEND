@@ -43,6 +43,12 @@ import { LeaveCreateComponent } from './features/leave/leave-create/leave-create
 import { LeaveUpdateComponent } from './features/leave/leave-update/leave-update';
 import { LeaveViewComponent } from './features/leave/leave-view/leave-view';
 import { LeavePendingComponent } from './features/leave/leave-pending/leave-pending';
+import { TsListComponent } from './features/timesheet/ts-list/ts-list';
+import { TsCreate } from './features/timesheet/ts-create/ts-create';
+import { TsUpdate } from './features/timesheet/ts-update/ts-update';
+import { TsView } from './features/timesheet/ts-view/ts-view';
+import { TsAllComponent } from './features/timesheet/ts-all/ts-all';
+
 
 
 
@@ -227,7 +233,43 @@ export const routes: Routes = [
         component: LeavePendingComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'leave.view.all' } // Admin/HR/Manager
-      }
+      },
+
+
+      // =========================
+// TIMESHEET ROUTES
+// =========================
+{
+  path: 'timesheet/my',
+  component: TsListComponent,
+  canActivate: [PermissionGuard],
+  data: { permission: 'timesheet.view' }
+},
+{
+  path: 'timesheet/create',
+  component: TsCreate,
+  canActivate: [PermissionGuard],
+   data: { permission: 'timesheet.create' }
+},
+{
+  path: 'timesheet/update/:id',
+  component: TsUpdate,
+  canActivate: [PermissionGuard],
+  data: { permission: 'timesheet.update' }
+},
+{
+  path: 'timesheet/view/:id',
+  component: TsView,
+  canActivate: [PermissionGuard],
+  data: { permission: 'timesheet.view' }
+},
+{
+  path: 'timesheet/all',
+  component: TsAllComponent,
+  canActivate: [PermissionGuard],
+   data: { permission: 'timesheet.view.all' }
+},
+
     ],
   },
 

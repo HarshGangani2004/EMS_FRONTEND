@@ -1,0 +1,115 @@
+<div class="form-container">
+
+  <h2>Create Timesheet</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+
+    <!-- PROJECT -->
+    <div class="form-group">
+      <label>Project <span class="required">*</span></label>
+
+      <select
+        class="form-input"
+        name="projectId"
+        [(ngModel)]="model.projectId"
+        required
+        #projectId="ngModel">
+
+        <option value="">Select Project</option>
+        <option *ngFor="let p of projects" [value]="p.id">
+          {{ p.name }}
+        </option>
+      </select>
+
+      <span class="error" *ngIf="projectId.invalid && projectId.touched">
+        Project is required
+      </span>
+    </div>
+
+    <!-- WORK TITLE -->
+    <div class="form-group">
+      <label>Work Title <span class="required">*</span></label>
+
+      <input
+        type="text"
+        class="form-input"
+        name="title"
+        [(ngModel)]="model.title"
+        minlength="3"
+        required
+        #title="ngModel" />
+
+      <span class="error" *ngIf="title.touched && title.errors">
+        <span *ngIf="title.errors['required']">Work title is required</span>
+        <span *ngIf="title.errors['minlength']">Minimum 3 characters</span>
+      </span>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        class="form-input"
+        name="description"
+        [(ngModel)]="model.description"
+        rows="3"></textarea>
+    </div>
+
+    <!-- START TIME -->
+    <div class="form-group">
+      <label>Start Time *</label>
+      <input
+        type="datetime-local"
+        class="form-input"
+        name="startTime"
+        [(ngModel)]="model.startTime"
+        required />
+    </div>
+
+    <!-- END TIME -->
+    <div class="form-group">
+      <label>End Time *</label>
+      <input
+        type="datetime-local"
+        class="form-input"
+        name="endTime"
+        [(ngModel)]="model.endTime"
+        required />
+    </div>
+
+    <!-- PLANNED HOURS -->
+    <div class="form-group">
+      <label>Planned Hours *</label>
+      <input
+        type="number"
+        min="0.1"
+        step="0.1"
+        class="form-input"
+        name="plannedHours"
+        [(ngModel)]="model.plannedHours"
+        required />
+    </div>
+
+    <!-- STATUS -->
+    <div class="form-group">
+      <label>Status</label>
+      <select class="form-input" name="status" [(ngModel)]="model.status">
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button type="submit" class="save-btn" [disabled]="submitting || form.invalid">
+        {{ submitting ? 'Saving...' : 'Save Timesheet' }}
+      </button>
+
+      <button type="button" class="cancel" routerLink="/timesheet/my">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+
+</div>

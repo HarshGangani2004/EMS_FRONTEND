@@ -1,0 +1,142 @@
+<div class="department-container">
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <h2>All Timesheets</h2>
+
+    <div class="header-actions">
+      <!-- SEARCH -->
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search work / user..."
+        [(ngModel)]="filter.search"
+        (input)="applyFilters()" />
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+
+    <!-- YEAR -->
+    <select [(ngModel)]="filter.year">
+      <option [ngValue]="null">Year</option>
+      <option *ngFor="let y of [2026,2025,2024]" [ngValue]="y">
+        {{ y }}
+      </option>
+    </select>
+
+    <!-- MONTH -->
+    <select [(ngModel)]="filter.month">
+      <option [ngValue]="null">Month</option>
+      <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="m">
+        {{ m }}
+      </option>
+    </select>
+
+    <!-- PROJECT -->
+    <select [(ngModel)]="filter.projectId">
+      <option [ngValue]="null">All Projects</option>
+      <option *ngFor="let p of projects" [ngValue]="p.id">
+        {{ p.name }}
+      </option>
+    </select>
+
+    <!-- STATUS (FIXED VALUE) -->
+    <select [(ngModel)]="filter.status">
+      <option value="">All Status</option>
+      <option value="InProgress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+
+    <button class="btn-apply" (click)="applyFilters()">Apply</button>
+    <button class="btn-clear" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <!-- LOADING -->
+  <p *ngIf="loading">Loading timesheets...</p>
+
+  <!-- TABLE -->
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="department-table">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>User</th>
+          <th>Project</th>
+          <th>Work Title</th>
+          <th>Planned</th>
+          <th>Actual</th>
+          <th>Efficiency</th>
+          <th>Status</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let t of items; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ t.workDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ t.userName }}</td>
+          <td>{{ t.projectName }}</td>
+          <td>{{ t.workTitle }}</td>
+          <td>{{ t.plannedHours }}</td>
+          <td>{{ t.actualHours }}</td>
+
+          <!-- EFFICIENCY -->
+          <td>
+            <span
+              [class.good]="t.efficiency >= 90"
+              [class.avg]="t.efficiency < 90 && t.efficiency >= 60"
+              [class.bad]="t.efficiency < 60">
+              {{ t.efficiency }}%
+            </span>
+          </td>
+
+          <!-- STATUS BADGE (FIXED) -->
+          <td>
+            <span class="status-badge" [ngClass]="statusClass(t.status)">
+              {{ formatStatus(t.status) }}
+            </span>
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="action-buttons">
+            <button class="icon-btn view" (click)="view(t.id)" *hasPermission="'timesheet.view.all'">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button class="icon-btn delete" (click)="delete(t.id)"  *hasPermission="'timesheet.delete'">
+              <i class="bi bi-trash" ></i>
+            </button>
+          </td>
+        </tr>
+
+        <!-- NO DATA -->
+        <tr *ngIf="!items.length">
+          <td colspan="10" class="no-data">
+            No timesheet records found
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="changePage(page - 1)" [disabled]="page === 1">
+      Prev
+    </button>
+
+    <span>Page {{ page }} of {{ totalPages }}</span>
+
+    <button (click)="changePage(page + 1)" [disabled]="page === totalPages">
+      Next
+    </button>
+  </div>
+
+</div>

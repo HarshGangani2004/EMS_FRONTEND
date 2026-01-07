@@ -34,11 +34,13 @@
 
     <!-- MONTH -->
     <select [(ngModel)]="filters.month">
-      <option [ngValue]="null">Month</option>
-      <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [ngValue]="m">
-        {{ m }}
-      </option>
-    </select>
+  <option [ngValue]="null">Month</option>
+
+  <option *ngFor="let m of months" [ngValue]="m.value">
+    {{ m.label }}
+  </option>
+</select>
+
 
     <!-- STATUS -->
     <select [(ngModel)]="filters.status" class="x">

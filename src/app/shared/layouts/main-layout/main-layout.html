@@ -53,6 +53,23 @@
       <li routerLink="/leave/all" routerLinkActive="active" *hasPermission="'leave.view.all'">
         <i class="bi bi-calendar2-week"></i> All Leaves
       </li>
+      <!-- MY TIMESHEET -->
+      <li
+        routerLink="/timesheet/my"
+        routerLinkActive="active"
+        *hasPermission="'timesheet.view'"
+       >
+        <i class="bi bi-clock-history"></i> My Timesheet
+      </li>
+
+      <!-- ALL TIMESHEET (ADMIN / MANAGER) -->
+      <li
+        routerLink="/timesheet/all"
+        routerLinkActive="active"
+        *hasPermission="'timesheet.view.all'"
+        >
+        <i class="bi bi-clipboard-data"></i> All Timesheet
+      </li>
 
 
       <li routerLink="/users" routerLinkActive="active" *hasPermission="'user.view'">
